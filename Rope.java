@@ -3,7 +3,7 @@ public class Rope {
     Node root;
 
     public Rope(String str) {
-        root = new Node(false, str);
+        root = new Node(str);
     }
     
     public Rope(Node root) {
@@ -11,13 +11,11 @@ public class Rope {
     }
     
     public int length() {
-        return root.totalSubtreeLength;
+        return root.totalLen;
     }
     
     public Rope concat(Rope r) {
-        Node root = new Node(true, null);
-        root.left = this.root;
-        root.right = r.root;
+        Node root = new Node(this.root, r.root);
         return new Rope(root);
     }
     
@@ -26,9 +24,13 @@ public class Rope {
             assert i >= 0 && i < node.data.length();
             return node.data.charAt(i);
         }
-        int leftLength = node.left.length;
-        if(leftLength < i) return charAt(node.left, i);
-        else return charAt(node.right, i - leftLength);
+
+        if(node.leftLen > i) {
+            return charAt(node.left, i);
+        }
+        else {
+            return charAt(node.right, i - node.leftLen);
+        }
     }
     
     public char charAt(int i) {

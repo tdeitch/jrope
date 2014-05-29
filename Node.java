@@ -3,13 +3,23 @@ public class Node {
     String data;
     Node left;
     Node right;
-    int length;
-    int leftSubtreeLength;
-    int totalSubtreeLength;
+    Node parent;
+    int leftLen;
+    int totalLen;
     
-    public Node(boolean isConcatNode, String data) {
-        this.isConcatNode = isConcatNode;
+    public Node(String data) {
+        this.isConcatNode = false;
         this.data = data;
-        this.length = (data == null) ? 0 : data.length();
+        this.leftLen = data.length();
+        this.totalLen = data.length();
     }
+
+    public Node(Node left, Node right) {
+        this.isConcatNode = true;
+        this.leftLen = (left == null) ? 0 : left.totalLen;
+        this.totalLen = this.leftLen + ((right == null) ? 0 : right.totalLen);
+        this.left = left;
+        this.right = right;
+    }
+
 }
