@@ -12,13 +12,21 @@ public class Test {
         System.out.println("\nSplitting");
         for(int i = 0; i <= r3.length(); i++) {
             Pair<Rope> pair = r3.split(i);
-            System.out.println("\t" + pair.one + "\t\tlen: " + pair.one.length());
-            System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.length());
+            if (pair.one != null) {
+                System.out.println("\t" + pair.one + "\t\tlen: " + pair.one.length());
+            }
+            if (pair.two != null) {
+                System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.length());
+            }
         }
         System.out.println("\nSubstring");
         for(int i = 0; i <= r3.length(); i++) {
             for (int j = i; j <= r3.length(); j++) {
-                System.out.println("\t" + r3.substring(i,j));
+                if (i != j) {
+                    System.out.println("\t" + r3.substring(i,j));
+                } else {
+                    System.out.println("\t");
+                }
             }
         }
         System.out.println("\nInsert");
