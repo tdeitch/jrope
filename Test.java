@@ -12,8 +12,8 @@ public class Test {
         System.out.println("\nSplitting");
         for(int i = 0; i <= r3.length(); i++) {
             Pair<Rope> pair = r3.split(i);
-            System.out.println("\t" + pair.one + "\t\tlen: " + pair.one.root.totalLen);
-            System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.root.totalLen);
+            System.out.println("\t" + pair.one + "\t\tlen: " + pair.one.length());
+            System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.length());
         }
         System.out.println("\nSubstring");
         for(int i = 0; i <= r3.length(); i++) {

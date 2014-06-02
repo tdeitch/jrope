@@ -1,17 +1,24 @@
 public class Rope {
 
     Node root;
+    int len;
 
     public Rope(String str) {
         root = new Node(str);
+        len = root.leftLen;
     }
 
     public Rope(Node root) {
         this.root = root;
+        int len = 0;
+        for (Node nd = root; nd != null; nd = nd.right) {
+            len += nd.leftLen;
+        }
+        this.len = len;
     }
 
     public int length() {
-        return root.totalLen;
+        return len;
     }
 
     public Rope concat(Rope r) {
@@ -20,8 +27,8 @@ public class Rope {
     }
 
     private char charAt(Node node, int i) {
-        if(!node.isConcatNode) {
-            assert i >= 0 && i < node.length;
+        if(node.left == null) {
+            assert i >= 0 && i < node.leftLen;
             return node.data.charAt(i);
         }
 
@@ -42,19 +49,19 @@ public class Rope {
     }
 
     public Pair<Rope> split(Node nd, int index) {
-        if (!nd.isConcatNode) {
-            assert index >= 0 && index <= nd.length;
+        if (nd.left == null) {
+            assert index >= 0 && index <= nd.leftLen;
             Rope left;
             Rope right;
             if (index == 0) {
                 left = new Rope("");
                 right = new Rope(nd);
-            } else if (index == nd.length) {
+            } else if (index == nd.leftLen) {
                 left = new Rope(nd);
                 right = new Rope("");
             } else {
                 left = new Rope(nd.data.substring(0, index));
-                right = new Rope(nd.data.substring(index, nd.length));
+                right = new Rope(nd.data.substring(index, nd.leftLen));
             }
             return new Pair<Rope>(left, right);
         }
@@ -81,7 +88,7 @@ public class Rope {
     }
 
     public String toString(Node node) {
-        if(!node.isConcatNode) return node.data;
+        if(node.left == null) return node.data;
         return toString(node.left) + toString(node.right);
     }
 
