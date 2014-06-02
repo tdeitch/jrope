@@ -1,40 +1,47 @@
 public class Rope {
 
-    Node root;
-    int len;
+    String data;
+    Rope left;
+    Rope right;
+    int leftLen;
 
-    public Rope(String str) {
-        root = new Node(str);
-        len = root.leftLen;
+    public Rope(String data) {
+        this.data = data;
+        this.leftLen = data.length();
     }
 
-    public Rope(Node root) {
-        this.root = root;
-        int len = 0;
-        for (Node nd = root; nd != null; nd = nd.right) {
-            len += nd.leftLen;
+    public Rope(Rope left, Rope right) {
+        this.left = left;
+        this.right = right;
+        int leftLen = 0;
+        for (Rope r = left; r != null; r = r.right) {
+            leftLen += r.leftLen;
         }
-        this.len = len;
+        this.leftLen = leftLen;
     }
 
     public int length() {
+        int len = 0;
+        for (Rope r = this; r != null; r = r.right) {
+            len += r.leftLen;
+        }
         return len;
     }
 
     public Rope concat(Rope r) {
-       return new Rope(concatNds(this.root, r.root));
+       return concat(this, r);
     }
 
-    public Node concatNds(Node one, Node two) {
+    public Rope concat(Rope one, Rope two) {
         if (one == null) {
             return two;
         } else if (two == null) {
             return one;
         }
-        return new Node(one, two);
+        return new Rope(one, two);
     }
 
-    private char charAt(Node node, int i) {
+    private char charAt(Rope node, int i) {
         if(node.left == null) {
             assert i >= 0 && i < node.leftLen;
             return node.data.charAt(i);
@@ -49,21 +56,17 @@ public class Rope {
     }
 
     public char charAt(int i) {
-        return charAt(root, i);
+        return charAt(this, i);
     }
 
     public Pair<Rope> split(int index) {
-        Pair<Node> nodes = splitNd(root, index);
-        Pair<Rope> ropes = new Pair<Rope>();
-        ropes.one = new Rope(nodes.one);
-        ropes.two = new Rope(nodes.two);
-        return ropes;
+        return split(this, index);
     }
 
-    public Pair<Node> splitNd(Node nd, int index) {
+    public Pair<Rope> split(Rope nd, int index) {
         if (nd.left == null) {
             assert index >= 0 && index <= nd.leftLen;
-            Pair<Node> nodes = new Pair<Node>();
+            Pair<Rope> nodes = new Pair<Rope>();
             if (index == 0) {
                 nodes.one = null;
                 nodes.two = nd;
@@ -71,19 +74,19 @@ public class Rope {
                 nodes.one = nd;
                 nodes.two = null;
             } else {
-                nodes.one = new Node(nd.data.substring(0, index));
-                nodes.two = new Node(nd.data.substring(index, nd.leftLen));
+                nodes.one = new Rope(nd.data.substring(0, index));
+                nodes.two = new Rope(nd.data.substring(index, nd.leftLen));
             }
             return nodes;
         }
         else if (index == nd.leftLen) {
-            return new Pair<Node>(root.left, root.right);
+            return new Pair<Rope>(nd.left, nd.right);
         } else if (index < nd.leftLen) {
-            Pair<Node> pair = splitNd(nd.left, index);
-            return new Pair<Node>(pair.one, concatNds(pair.two, nd.right));
+            Pair<Rope> pair = split(nd.left, index);
+            return new Pair<Rope>(pair.one, concat(pair.two, nd.right));
         } else {
-            Pair<Node> pair = splitNd(nd.right, index - nd.leftLen);
-            return new Pair<Node>(concatNds(nd.left, pair.one), pair.two);
+            Pair<Rope> pair = split(nd.right, index - nd.leftLen);
+            return new Pair<Rope>(concat(nd.left, pair.one), pair.two);
         }
     }
 
@@ -95,15 +98,11 @@ public class Rope {
 
     public Rope insert(Rope r, int index) {
         Pair<Rope> pair = this.split(index);
-        return pair.one.concat(r).concat(pair.two);
-    }
-
-    public String toString(Node node) {
-        if(node.left == null) return node.data;
-        return toString(node.left) + toString(node.right);
+        return concat(concat(pair.one, r), pair.two);
     }
 
     public String toString() {
-        return toString(root);
+        if(left == null) return data;
+        return left.toString() + right.toString();
     }
 }
