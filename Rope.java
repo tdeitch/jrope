@@ -13,16 +13,16 @@ public class Rope {
     public Rope(Rope left, Rope right) {
         this.left = left;
         this.right = right;
-        int leftLen = 0;
-        for (Rope r = left; r != null; r = r.right) {
-            leftLen += r.leftLen;
-        }
-        this.leftLen = leftLen;
+        int leftLen = length(left);
     }
 
     public int length() {
+        return length(this);
+    }
+
+    public int length(Rope r) {
         int len = 0;
-        for (Rope r = this; r != null; r = r.right) {
+        for (; r != null; r = r.right) {
             len += r.leftLen;
         }
         return len;
