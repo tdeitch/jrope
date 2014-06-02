@@ -21,7 +21,7 @@ public class Rope {
 
     private char charAt(Node node, int i) {
         if(!node.isConcatNode) {
-            assert i >= 0 && i < node.data.length();
+            assert i >= 0 && i < node.length;
             return node.data.charAt(i);
         }
 
@@ -43,18 +43,18 @@ public class Rope {
 
     public Pair<Rope> split(Node nd, int index) {
         if (!nd.isConcatNode) {
-            assert index >= 0 && index <= nd.data.length();
+            assert index >= 0 && index <= nd.length;
             Rope left;
             Rope right;
             if (index == 0) {
                 left = new Rope("");
                 right = new Rope(nd);
-            } else if (index == nd.data.length()) {
+            } else if (index == nd.length) {
                 left = new Rope(nd);
                 right = new Rope("");
             } else {
                 left = new Rope(nd.data.substring(0, index));
-                right = new Rope(nd.data.substring(index, index + nd.data.length()));
+                right = new Rope(nd.data.substring(index, nd.length));
             }
             return new Pair<Rope>(left, right);
         }
@@ -75,7 +75,12 @@ public class Rope {
         return sp2.one;
     }
 
-   public String toString(Node node) {
+    public Rope insert(Rope r, int index) {
+        Pair<Rope> pair = this.split(index);
+        return pair.one.concat(r).concat(pair.two);
+    }
+
+    public String toString(Node node) {
         if(!node.isConcatNode) return node.data;
         return toString(node.left) + toString(node.right);
     }

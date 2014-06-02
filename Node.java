@@ -1,6 +1,8 @@
 public class Node {
     boolean isConcatNode;
     String data;
+    int index;
+    int length;
     Node left;
     Node right;
     Node parent;
@@ -10,8 +12,10 @@ public class Node {
     public Node(String data) {
         this.isConcatNode = false;
         this.data = data;
-        this.leftLen = data.length();
-        this.totalLen = data.length();
+        this.index = index;
+        this.length = data.length();
+        this.leftLen = length;
+        this.totalLen = length;
     }
 
     public Node(Node left, Node right) {
@@ -22,4 +26,7 @@ public class Node {
         this.right = right;
     }
 
+    public String toString() {
+        return data;
+    }
 }
