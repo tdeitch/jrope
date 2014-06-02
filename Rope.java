@@ -22,8 +22,16 @@ public class Rope {
     }
 
     public Rope concat(Rope r) {
-        Node root = new Node(this.root, r.root);
-        return new Rope(root);
+       return new Rope(concatNds(this.root, r.root));
+    }
+
+    public Node concatNds(Node one, Node two) {
+        if (one == null) {
+            return two;
+        } else if (two == null) {
+            return one;
+        }
+        return new Node(one, two);
     }
 
     private char charAt(Node node, int i) {
@@ -45,34 +53,37 @@ public class Rope {
     }
 
     public Pair<Rope> split(int index) {
-        return split(root, index);
+        Pair<Node> nodes = splitNd(root, index);
+        Pair<Rope> ropes = new Pair<Rope>();
+        ropes.one = new Rope(nodes.one);
+        ropes.two = new Rope(nodes.two);
+        return ropes;
     }
 
-    public Pair<Rope> split(Node nd, int index) {
+    public Pair<Node> splitNd(Node nd, int index) {
         if (nd.left == null) {
             assert index >= 0 && index <= nd.leftLen;
-            Rope left;
-            Rope right;
+            Pair<Node> nodes = new Pair<Node>();
             if (index == 0) {
-                left = new Rope("");
-                right = new Rope(nd);
+                nodes.one = null;
+                nodes.two = nd;
             } else if (index == nd.leftLen) {
-                left = new Rope(nd);
-                right = new Rope("");
+                nodes.one = nd;
+                nodes.two = null;
             } else {
-                left = new Rope(nd.data.substring(0, index));
-                right = new Rope(nd.data.substring(index, nd.leftLen));
+                nodes.one = new Node(nd.data.substring(0, index));
+                nodes.two = new Node(nd.data.substring(index, nd.leftLen));
             }
-            return new Pair<Rope>(left, right);
+            return nodes;
         }
         else if (index == nd.leftLen) {
-            return new Pair<Rope>(new Rope(root.left), new Rope(root.right));
+            return new Pair<Node>(root.left, root.right);
         } else if (index < nd.leftLen) {
-            Pair<Rope> pair = split(nd.left, index);
-            return new Pair<Rope>(pair.one, pair.two.concat(new Rope(nd.right)));
+            Pair<Node> pair = splitNd(nd.left, index);
+            return new Pair<Node>(pair.one, concatNds(pair.two, nd.right));
         } else {
-            Pair<Rope> pair = split(nd.right, index - nd.leftLen);
-            return new Pair<Rope>((new Rope(nd.left)).concat(pair.one), pair.two);
+            Pair<Node> pair = splitNd(nd.right, index - nd.leftLen);
+            return new Pair<Node>(concatNds(nd.left, pair.one), pair.two);
         }
     }
 
