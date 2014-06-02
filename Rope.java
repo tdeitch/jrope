@@ -13,7 +13,7 @@ public class Rope {
     public Rope(Rope left, Rope right) {
         this.left = left;
         this.right = right;
-        int leftLen = length(left);
+        this.leftLen = length(left);
     }
 
     public int length() {

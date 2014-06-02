@@ -16,7 +16,7 @@ public class Test {
                 System.out.println("\t" + pair.one + "\t\tlen: " + pair.one.length());
             }
             if (pair.two != null) {
-                System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.length());
+                System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.length() + "\n");
             }
         }
         System.out.println("\nSubstring");
