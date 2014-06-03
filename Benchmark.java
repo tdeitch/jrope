@@ -4,6 +4,7 @@ public class Benchmark {
 
     public static final int NUM_ROUNDS = 1000;
     public static final int STRLEN = 5000;
+    static final int OUTPUT_OFFSET = 35;
 
     static Random rng;
 
@@ -11,6 +12,9 @@ public class Benchmark {
         T execute(T str);
     }
 
+    /*
+     *    SPECIFY TESTS HERE
+     */
 
     static class CharAtTest<T extends CharSequence> implements Test<T> {
         public T execute(T str) {
@@ -94,10 +98,15 @@ public class Benchmark {
             str = test.execute(str);
         }
         long endTime = System.nanoTime();
-        System.out.println(test.getClass().getSimpleName() + " duration: \t" + (endTime - startTime));
+        String testName = test.getClass().getSimpleName().replace("String", "").replace("Rope", "");
+        testName = str.getClass().getSimpleName() + ":" + testName;
+        int maxSize = OUTPUT_OFFSET - testName.length();
+        System.out.printf("%s duration: %" + maxSize + "d\n", testName, (endTime - startTime));
         return str;
     }
-    // From: http://stackoverflow.com/questions/2863852/how-to-generate-a-random-string-in-java
+    
+    // From: http://stackoverflow.com/questions/2863852/
+    // how-to-generate-a-random-string-in-java
     public static String generateString(int length) {
         String characters = "qwertyuiopasdfghjklzxcvbnm";
         int charlen = 26;
@@ -108,5 +117,4 @@ public class Benchmark {
         }
         return new String(text);
     }
-
 }
