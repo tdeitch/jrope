@@ -63,7 +63,7 @@ public class Benchmark {
             int int2 = rng.nextInt(str.length()+1);
             int start = Math.min(int1, int2);
             int end = Math.max(int1, int2);
-            str.substring(start, end);
+            str.subSequence(start, end);
             return str;
         }
     }

@@ -1,4 +1,4 @@
-public class Rope {
+public class Rope implements CharSequence {
 
     String data;
     Rope left;
@@ -90,7 +90,7 @@ public class Rope {
         }
     }
 
-    public Rope substring(int start, int end) {
+    public Rope subSequence(int start, int end) {
         Pair<Rope> sp1 = split(start);
         Pair<Rope> sp2 = sp1.two.split(end - start);
         return sp2.one;

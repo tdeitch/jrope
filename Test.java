@@ -19,11 +19,11 @@ public class Test {
                 System.out.println("\t" + pair.two + "\t\tlen: " + pair.two.length() + "\n");
             }
         }
-        System.out.println("\nSubstring");
+        System.out.println("\nSub-sequence");
         for(int i = 0; i <= r3.length(); i++) {
             for (int j = i; j <= r3.length(); j++) {
                 if (i != j) {
-                    System.out.println("\t" + r3.substring(i,j));
+                    System.out.println("\t" + r3.subSequence(i,j));
                 } else {
                     System.out.println("\t");
                 }
