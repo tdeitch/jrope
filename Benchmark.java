@@ -98,10 +98,12 @@ public class Benchmark {
             str = test.execute(str);
         }
         long endTime = System.nanoTime();
-        String testName = test.getClass().getSimpleName().replace("String", "").replace("Rope", "");
+        String testName = test.getClass().getSimpleName()
+            .replace("String", "").replace("Rope", "");
         testName = str.getClass().getSimpleName() + ":" + testName;
         int maxSize = OUTPUT_OFFSET - testName.length();
-        System.out.printf("%s duration: %" + maxSize + "d\n", testName, (endTime - startTime));
+        System.out.printf("%s duration: %" + maxSize + "d\n",
+                testName, (endTime - startTime));
         return str;
     }
     
